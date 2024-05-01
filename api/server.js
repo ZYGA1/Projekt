@@ -4,12 +4,13 @@ const cors = require('cors')
 const morgan = require('morgan');
 const userRouter = require('./routers/userRouter')
 const productsRouter = require('./routers/productsRouter')
+const auth = require('./auth/Auth')
 
 app.use(morgan('dev'));
 app.use(cors())
 app.use(express.json(express.urlencoded({ extended: true })));
 
-
+app.use(auth)
 app.use('/api/users', userRouter)
 app.use('/api/products', productsRouter)
 
