@@ -3,3 +3,15 @@ api/node_modules
 api/.env
 scripts/__pycache__
 scripts/.env
+web/node_modules
+
+web/logs
+web/*.log
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/pnpm-debug.log*
+web/lerna-debug.log*
+web/dist
+web/dist-ssr
+web/*.local
