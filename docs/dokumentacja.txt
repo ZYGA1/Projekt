@@ -1,0 +1,214 @@
+
+
+Cele:
+
+Uzytkownik:
+    Mozliwosc utworzenia, logowania, usuniecia i aktualizacji danych uzytkownika
+
+Opinie:
+    Kazdy uzytkownik moze wystawic jedna opinie dla projektu i jedna dla kazdego produktu
+
+Produkty:
+    Przechowywanie danych o produktach
+
+Zamowienia:
+    Uzytkownicy moga skladac zamowienia i zobaczyc jego aktualny status
+
+Struktura:
+
+Baza Danych Suplementy:
+
+    Użytkownicy:
+        id int unsigned PK,
+        login varchar,
+        haslo_hash varchar,
+        email varchar,
+        data_utworzenia DATE
+        
+        Zapytanie:
+            Create table uzytkownicy(
+    	        id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+    	        login varchar(30) not null,
+    	        haslo_hash varchar(200) not null,
+    	        email varchar(50) not null,
+    	        data_utworzenia DATE not null
+	        )
+    
+    Użytkownicy_detale:
+        id int unsigned PK,
+        imie varchar, 
+        nazwisko varchar,
+        miejscowosc varchar,
+        ulica varchar,
+        kod_pocztowy varchar,
+        nr_domu varchar,
+        id_uzytkownicy FK
+
+        Zapytanie:
+            Create table uzytkownicy_detale(
+                id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+                imie varchar(20),
+                nazwisko varchar(30),
+                miejscowosc varchar(50),
+                ulica varchar(30),
+                kod_pocztowy varchar(10),
+                nr_domu varchar(10),
+                id_uzytkownicy int(10) unsigned not null,
+                FOREIGN KEY (id_uzytkownicy) REFERENCES uzytkownicy(id)
+            )
+
+    Opinie:
+        id int unsigned PK,
+        gwiazdki int unsigned,
+        tresc text,
+        data_wystawienia DATE,
+        id_uzytkownicy FK
+
+        Zapytanie:
+            Create Table opinie(
+		        id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+    	        gwiazdki int unsigned not null,
+    	        tresc TEXT,
+    	        data_wystawienia DATE not null,
+    	        id_uzytkownicy int unsigned UNIQUE not null,
+    	        FOREIGN KEY (id_uzytkownicy) REFERENCES uzytkownicy(id)
+	        )
+
+    Producenci:
+        id int unsigned PK,
+        nazwa varchar
+
+        Zapytanie:
+            Create table producenci(
+                id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+                nazwa varchar(50) not null
+            )
+
+    Kategorie:
+        id int unsigned PK,
+        nazwa varchar
+
+        Zapytanie:
+            create table kategorie(
+		        id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+    	        nazwa varchar(50) not null
+	        )
+
+    Kategorie_Produkty:
+        id_produkty FK,
+        id_kategorie FK
+
+        Zapytanie:
+            create table kategorie_produkty(
+		        id_kategorie int(10) unsigned not null,
+    	        id_produkty int(10) unsigned not null,
+    	        FOREIGN KEY (id_kategorie) REFERENCES kategorie(id),
+    	        FOREIGN KEY (id_produkty) REFERENCES produkty(id)
+    	    )
+    
+    Produkty:
+        id int unsigned PK,
+        nazwa varchar,
+        cena decimal,
+        opis text,
+        dostepna_ilosc int unsigned,
+        id_producenci FK
+
+        Zapytanie:
+            Create table produkty(
+                id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+                nazwa varchar(50) not null,
+                cena decimal(6,2) not null,
+                opis TEXT,
+                dostepna_ilosc int unsigned not null,
+                id_producenci int(10) unsigned,
+                FOREIGN KEY (id_producenci) REFERENCES producenci(id)
+            )
+
+    Opinie_produktu:
+        id_produkty FK,
+        id_uzytkownicy FK,
+        gwiazdki int unsigned,
+        tresc TEXT,
+        data_wystawienia DATE
+
+        Zapytanie:
+            Create table opinie_produktu(
+                gwiazdki int unsigned not null,
+                tresc TEXT,
+                data_wystawienia DATE,
+                id_uzytkownicy int(10) unsigned not null,
+                id_produkty int(10) unsigned not null,
+                FOREIGN KEY (id_uzytkownicy) REFERENCES uzytkownicy(id),
+                FOREIGN KEY (id_produkty) REFERENCES produkty(id)
+            )
+
+    Metoda_dostawy:
+        id int unsigned PK,
+        nazwa varchar,
+        cena decimal
+
+        Zapytanie:
+            Create table metoda_dostawy(
+                id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+                nazwa varchar(50) not null,
+                cena decimal(6,2) not null
+            )
+ 
+
+    Zamowienia:
+        id int unsigned PK,
+        data_zamowienia DATE,
+        id_uzytkownicy FK,
+        id_metoda_dostawy FK,
+        is_status_zamowienia FK
+
+        Zapytanie:
+            Create table zamowienia(
+		        id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+    	        data_zamowienia DATE not null,
+    	        id_uzytkownicy int(10) unsigned not null,
+    	        id_metoda_dostawy int(10) unsigned not null,
+    	        id_status_zamowienia int(10) unsigned not null,
+    	        FOREIGN KEY (id_uzytkownicy) REFERENCES uzytkownicy(id),
+    	        FOREIGN KEY (id_metoda_dostawy) REFERENCES metoda_dostawy(id),
+    	        FOREIGN KEY (id_status_zamowienia) REFERENCES status_zamowienia(id)
+	        )
+
+    Zamowienie_produkty:
+        id int unsigned PK,
+        ilosc int unsigned,
+        id_zamowienia FK,
+        id_produkty FK
+
+        Zapytanie:
+            Create table zamowienie_produkty(
+                id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+                ilosc int unsigned not null,
+                id_zamowienia int(10) unsigned not null,
+                id_produkty int(10) unsigned not null,
+                FOREIGN KEY (id_zamowienia) REFERENCES zamowienia(id),
+                FOREIGN KEY (id_produkty) REFERENCES produkty(id)
+            );
+
+    Status_zamowienia:
+        id int unsigned PK,
+        nazwa enum('Zlozone', 'Wyslane', 'Dostarczone', 'Anulowane')
+
+        Zapytanie:
+            Create table status_zamowienia(
+                id int unsigned AUTO_INCREMENT PRIMARY KEY not null,
+                nazwa ENUM('Zlozone', 'Wyslane', 'Dostarczone', 'Anulowane') not null
+            )
+
+    Koszyk:
+        id int unsigned PK,
+        id_uzytkownicy FK,
+    
+    Koszyk_produkty:
+        ilosc int unsinged,
+        id_koszyk FK,
+        id_produkty FK
+
+
+

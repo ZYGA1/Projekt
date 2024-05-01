@@ -1,0 +1,5 @@
+.vscode
+api/node_modules
+api/.env
+scripts/__pycache__
+scripts/.env
