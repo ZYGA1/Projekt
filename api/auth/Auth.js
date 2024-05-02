@@ -38,12 +38,13 @@ router.post('/login', (req, res) => {
                     const [resHaslo] = await db.query('Select haslo_hash, id from uzytkownicy where login = ?', [login])
                     if(haslo_hash === resHaslo[0].haslo_hash){
                         newKey(process.env.JWT_SECRET_KEY, {id: resHaslo[0].id, login: result[0].login}, (token) => {
+                            res.cookie('jwt_token', token, {maxAge: 60*60*1000, secure: false, httpOnly: true, sameSite: 'none'})
                             res.status(200).json({Access: "Granted", jwt_token: token})
                         })
-                } 
-                else{
-                    res.status(401).json({Access: "Denied", Error: "Wrong password"})
-                }
+                    }
+                    else{
+                        res.json({Access: 'Denied', Error: 'Wrong password'})
+                    } 
                 } 
             }
             else{

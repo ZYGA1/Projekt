@@ -16,10 +16,11 @@ export default function Login(){
             <form onSubmit={(e) => {
                 e.preventDefault()
 
-                if (login.length > 1){
+                if (login.length > 0){
                     
                     fetch('http://localhost:9000/login', {
                         method: "POST",
+                        credentials: 'include',
                         headers:{
                             'Content-Type': 'application/json',
                             'connection': 'keep-alive',
@@ -36,8 +37,6 @@ export default function Login(){
                     .then(data => console.log(data))
                     .catch(err => console.log(err))
                 }
-
-                
 
             }}>
                 <label>Hasło: </label><br/>

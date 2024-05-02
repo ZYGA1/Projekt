@@ -7,8 +7,15 @@ const productsRouter = require('./routers/productsRouter')
 const auth = require('./auth/Auth')
 
 app.use(morgan('dev'));
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}))
 app.use(express.json(express.urlencoded({ extended: true })));
+app.use((req, res, next) => {
+    res.set('x-powered-by', 'zyga')
+    next()
+})
 
 app.use(auth)
 app.use('/api/users', userRouter)
