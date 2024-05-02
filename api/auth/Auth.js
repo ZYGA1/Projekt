@@ -3,19 +3,33 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const router = express.Router()
 
-const verifyKey = (req, res , next) => {
-    const token = req.headers.authorization
+const verifyKey = (token, res) => {
 
     if(!token) {
-        return res.status(401).json({Error: "Brak Tokena JWT"})
+        res.json({
+            verified: false,
+            Error: "No JWT token"
+        }) 
     }
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if(err){
-            return res.status(401).json({Error: "Nieprawidłowy token JWT"})
+            res.json({
+                verified: false,
+                Error: "Wrong JWT token"
+            })
         } 
-        req.user = decoded()
-        next()
+        else{
+            res.json(
+                {
+                    verified: true,
+                    user: {
+                        id: decoded.id,
+                        login: decoded.login
+                    }
+                })
+        }
+        
     })       
 }
 
@@ -26,10 +40,14 @@ const newKey = (key, user, fn) => {
     })
 }
 
+router.post('/verify', (req, res) => {
+    verifyKey(req.headers.authorization.split(' ')[1], res)
+})
+
 router.post('/login', (req, res) => {
     res.set('x-powered-by', 'zyga')
     const data = req.body.data
-    console.log(data)
+
     const verifyUser = async (login, haslo_hash) => {
         try{
             const [result] = await db.query('Select login, haslo_hash from uzytkownicy where login = ?', [login])
@@ -38,12 +56,12 @@ router.post('/login', (req, res) => {
                     const [resHaslo] = await db.query('Select haslo_hash, id from uzytkownicy where login = ?', [login])
                     if(haslo_hash === resHaslo[0].haslo_hash){
                         newKey(process.env.JWT_SECRET_KEY, {id: resHaslo[0].id, login: result[0].login}, (token) => {
-                            res.cookie('jwt_token', token, {maxAge: 60*60*1000, secure: false, httpOnly: true, sameSite: 'none'})
+                            res.cookie('jwt_token', token, {maxAge: 60*60*1000, secure: true, sameSite: 'none'})
                             res.status(200).json({Access: "Granted", jwt_token: token})
                         })
                     }
                     else{
-                        res.json({Access: 'Denied', Error: 'Wrong password'})
+                        res.status(401).json({Access: 'Denied', Error: 'Wrong password'})
                     } 
                 } 
             }

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react"
+import validateJWT from '../auth/JwtValidate'
+
 
 export default function Login(){
+
+    validateJWT().then(data => console.log(data))
 
     const [login, setLogin] = useState('')
     const [passwd, setPasswd] = useState('')
@@ -39,20 +43,20 @@ export default function Login(){
                 }
 
             }}>
-                <label>Hasło: </label><br/>
+                <label>Login: </label><br/>
                 <input 
                     type="text"
-                    value={passwd}
-                    onChange={(e) => {
-                        setPasswd(e.target.value)
-                    }}
-                /><br />
-                <label>Login: </label><br />
-                <input 
-                    type="text" 
                     value={login}
                     onChange={(e) => {
                         setLogin(e.target.value)
+                    }}
+                /><br />
+                <label>Hasło: </label><br />
+                <input 
+                    type="text" 
+                    value={passwd}
+                    onChange={(e) => {
+                        setPasswd(e.target.value)
                     }}
                 /><br/>
                 <button type="submit">Zaloguj</button>
