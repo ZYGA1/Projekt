@@ -4,7 +4,6 @@ import validateJWT from '../auth/JwtValidate'
 
 export default function Login(){
 
-    validateJWT().then(data => console.log(data))
 
     const [login, setLogin] = useState('')
     const [passwd, setPasswd] = useState('')
@@ -38,7 +37,7 @@ export default function Login(){
                         }),                        
                     })
                     .then(result => result.json())
-                    .then(data => console.log(data))
+                    .then(data => console.log(data.Access))
                     .catch(err => console.log(err))
                 }
 

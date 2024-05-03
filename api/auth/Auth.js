@@ -6,7 +6,7 @@ const router = express.Router()
 const verifyKey = (token, res) => {
 
     if(!token) {
-        res.json({
+        res.status(401).json({
             verified: false,
             Error: "No JWT token"
         }) 
@@ -14,13 +14,13 @@ const verifyKey = (token, res) => {
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if(err){
-            res.json({
+            res.status(401).json({
                 verified: false,
                 Error: "Wrong JWT token"
             })
         } 
         else{
-            res.json(
+            res.status(200).json(
                 {
                     verified: true,
                     user: {
@@ -83,7 +83,22 @@ router.post('/login', (req, res) => {
     }
 })
 
-router.post('register', (req, res) => {
+router.post('/register', async (req, res) => {
+
+    try {
+        [result] = await db.query('Insert into uzytkownicy(email, login, haslo_hash, data_utworzenia) values (?, ?, ?, ?)', [req.body.email, req.body.login, req.body.haslo, '2024-05-03'])
+        
+        if(result.affectedRows > 0){
+            newKey(process.env.JWT_SECRET_KEY, {id: result.insertId, login: req.body.login}, (token) => {
+                res.cookie('jwt_token', token, {maxAge: 60*60*1000, secure: true, sameSite: 'none'})
+                res.status(200).json({Access: "Created", jwt_token: token})
+            })
+        }
+    }
+    catch(err) {
+        console.log(err)
+        res.json({Error: "Server Ezrror"})
+    }
 
 })
 

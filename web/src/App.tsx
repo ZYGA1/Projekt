@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react"
-import Navbar from "./components/Navbar"
 import Login from "./auth/Login"
-
+import Register from "./auth/Register"
 
 function App() {
 
   return (
     <>
-      <Login/>
+      <Register/>
     </>
   )
 }

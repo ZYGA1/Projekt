@@ -20,6 +20,10 @@ export default async function validateJWT(){
     }
     catch(err){
         console.log('[Error] Fetching error')
+        return { 
+            verified: false,
+            Error: "Fetching Error"
+        }
     }
 }
 
