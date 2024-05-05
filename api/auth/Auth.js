@@ -61,12 +61,12 @@ router.post('/login', (req, res) => {
                         })
                     }
                     else{
-                        res.status(401).json({Access: 'Denied', Error: 'Wrong password'})
+                        res.status(401).json({Access: 'Denied', Error: 'Złe hasło'})
                     } 
                 } 
             }
             else{
-                res.status(401).json({Access: "Denied", Error: "Wrong login or password"})
+                res.status(401).json({Access: "Denied", Error: "Zły login lub hasło"})
             }
         }
         catch(err){
@@ -100,6 +100,41 @@ router.post('/register', async (req, res) => {
         res.json({Error: "Server Ezrror"})
     }
 
+})
+
+router.post('/checklogin', async (req, res) => {
+    const login = req.body.login
+    console.log(login)
+    try {
+        const [result] = await db.query('Select id from uzytkownicy where login = ?', [login])
+        if (!result[0]){
+            res.json({taken: false})
+        }
+        else {
+            res.json({taken: true})
+        }
+    }
+    catch(err) {
+        res.status(400).json({Error: "Server Error"})
+    }
+})
+
+router.post('/changepassword', async (req, res) => {
+    const login = req.body.login
+    const nPasswd = req.body.password
+
+    try {
+        const [result] = await db.query('Update uzytkownicy set haslo_hash = ? where login = ?', [nPasswd, login])
+        if(result.affectedRows > 0) {
+            res.json({message: 'Zmieniono hasło przekierowanie za 5 sekund'})
+        }
+        else {
+            res.json({Error: 'Server Error'})
+        }
+    }
+    catch(err) {
+        res.json({Error: 'Server Error'})
+    }
 })
 
 module.exports = router

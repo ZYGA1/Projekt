@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
 import validateJWT from '../auth/JwtValidate'
+import Error from "./Error"
+import './stylesheets/register.css'
+import { NavLink } from "react-router-dom"
 
 
 export default function Login(){
@@ -15,8 +18,18 @@ export default function Login(){
     }, [])
 
     return (
-        <>
-            <form onSubmit={(e) => {
+        <div id="registerBox">  
+        <NavLink to={'/'}>
+            <h1 id="back"><svg height="150px" id="Layer_1" version="1.1" viewBox="0 0 512 512" width="150px" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="288,91.2 256.4,64 160,192 256.4,320 288,292.4 192.8,192 "/>
+        </svg></h1>
+        </NavLink>
+            <div id="registerMain">
+            <h3>ZALOGUJ</h3>
+            <hr />
+            <div id="register">
+            
+            <form id="form" onSubmit={(e) => {
                 e.preventDefault()
 
                 if (login.length > 0){
@@ -37,29 +50,46 @@ export default function Login(){
                         }),                        
                     })
                     .then(result => result.json())
-                    .then(data => console.log(data.Access))
+                    .then((data) => {console.log(data)
+                        setError(data.Error)
+                    })
                     .catch(err => console.log(err))
+                }
+                else {
+                    setError('Podaj login i hasło')
                 }
 
             }}>
-                <label>Login: </label><br/>
+                {error ? <Error content={error}></Error> : <></>}
+                <div className="formBox formBox1">
+                <label className="formLabel">Login </label><br/>
                 <input 
+                    className="formInput"
                     type="text"
                     value={login}
                     onChange={(e) => {
                         setLogin(e.target.value)
                     }}
                 /><br />
-                <label>Hasło: </label><br />
+                </div>
+                <div className="formBox formBox1">
+                <label className="formLabel">Hasło </label><br />
                 <input 
+                    className="formInput"
                     type="text" 
                     value={passwd}
                     onChange={(e) => {
                         setPasswd(e.target.value)
                     }}
                 /><br/>
-                <button type="submit">Zaloguj</button>
-            </form>        
-        </>
+                </div>
+                <hr />
+                <button type="submit"><b>Zaloguj</b></button>
+                <p id="mamKonto">Nie masz konta? <NavLink to={'/register'}>zarejestruj się!</NavLink></p>
+                <p id="mamKonto">Nie pamiętasz hasła? <NavLink to={'/resetHaslo'}>zresetuj hasło!</NavLink></p>
+            </form>  
+            </div>  
+            </div>    
+        </div>
     )
 }

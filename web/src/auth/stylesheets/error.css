@@ -1,0 +1,22 @@
+#errorBox {
+    border: 2px solid rgba(255, 0, 0, 0.7); 
+    background-color: rgba(255, 0, 0, 0.1); 
+    border-radius: 8px; 
+    text-align: center;
+    width: 55%;
+    height: 5%;
+    padding: 20px;
+    margin-top: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: 0.5s ease-in-out;
+}
+
+#errorMessage {
+    font-size: 110%; 
+    color: rgba(255, 0, 0, 0.9); 
+    transition: 0.5s ease-in-out;
+}
+
+#errorBox:hover {
+    width: 70%;
+}

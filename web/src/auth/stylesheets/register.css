@@ -1,0 +1,121 @@
+#back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 20px;
+}
+
+#mamKonto{
+    margin-top: 1.5%;
+}
+
+#mamKonto a {
+    text-decoration: none;
+    color: rgb(26, 175, 255);
+}
+
+#registerBox {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#registerMain {
+    position: relative;
+    top: -20;
+    height: 75vh;
+    width: 40%;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    border-radius: 25px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#registerMain h3 {
+    margin-bottom: 4%;
+}
+
+#registerMain hr{
+    background-color: black;
+    width: 50%;
+    
+}
+
+#register {
+    
+    border-radius: 5px;
+    height: 75%;
+    width: 70%;
+}
+
+#form { 
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formBox {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+.formInput {
+    display: inline;
+   padding: 2px;
+   padding-left: 5px;
+   padding-right: 5px;
+   width: 25%;
+   height: 20%;
+   transition: 0.5s ease-in-out;
+   border-color: blue;
+   margin-left: 30px;
+   border-radius: 5px;
+   border: 2px solid rgba(0, 0, 0, 0.4);
+   outline: none;
+}
+
+form:focus {
+    border: black solid  2px;
+}
+
+.formInput:focus {
+    border-color: rgb(26, 175, 255);
+    height: 25%;
+    font-size: 100%;
+    width: 40%;
+}
+
+.formLabel:focus{
+    background-color: blue;
+}
+
+.formLabel{
+    width: 20%;
+    text-align: right;
+    font-size: 120%;
+    
+}
+
+#form button {
+    width: 50%;
+    height: 10%;
+    margin-top: 5%;
+    border-radius: 5px;
+    border-color: rgb(26, 175, 255);
+    box-shadow: 0px 0px 0px;
+    background-color: rgb(26, 175, 255);
+    font-size: 120%;
+    color: white;
+}
