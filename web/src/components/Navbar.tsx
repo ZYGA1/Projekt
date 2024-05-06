@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react"
 import './navabar.css'
 import Cart from "./Cart"
 
-export default function Navbar(){
 
-
+export default function Navbar() {
 
     return (
         <nav id="nav">
@@ -26,7 +24,7 @@ export default function Navbar(){
                         <h3>MOJE <br /> KONTO</h3>
                     </li>
                     <li>
-                        <Cart/ >
+                        <Cart/>
                     </li>
                 </ul>
             </div>
