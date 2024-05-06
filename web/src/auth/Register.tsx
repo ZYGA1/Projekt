@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import validateJWT from "./JwtValidate"
 import Error from "./Error"
 import '../auth/stylesheets/register.css'
 import { NavLink } from "react-router-dom"
@@ -14,15 +13,9 @@ export default function Register(){
     const [err, SetErr] = useState('')
 
     useEffect(() => {
-        const verified = validateJWT().then((data) => {
-            console.log(data)
-        })
-
         checkLogin(login).then((result) =>  {
-            console.log(result)
             SetTaken(result.taken)
         })
-
         
     }, [login])
 
@@ -41,10 +34,7 @@ export default function Register(){
         const data  = await res.json()
         return data
     }
-    const divStyle = {
-        backgroundColor: taken ? 'red' : 'blue',
-        width: '20%'
-    }
+
 
     return (
     <div id="registerBox">
@@ -62,7 +52,7 @@ export default function Register(){
             <form id="form" onSubmit={(e) => {
                 e.preventDefault()
                 if (haslo === rHaslo){
-                    if(taken == false){
+                    if(!taken){
                         fetch('http://localhost:9000/register', {
                             method: "POST",
                             credentials: 'include',

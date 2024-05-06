@@ -1,0 +1,42 @@
+#nav {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+#navContent {
+    display: flex;
+    justify-content: space-between;
+    width: 80vw;
+    align-items: center;
+}
+
+#navContent ul {
+    display: flex;
+    width: 33.33%;
+    justify-content: center;
+    align-items: center;
+}
+
+#navContent ul li {
+    display: block;
+    width: 33.33%;
+    padding: 20px;
+    text-align: left;
+}
+
+#navContent input {
+    display: flex;
+    width: 33%;
+    height: 35%;
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 130%;
+    border: 1px rgba(127, 127, 127, 0.5) solid;
+    transition: 0.3s ease-in-out;
+}
+
+#navContent input:focus {
+    outline: none;
+    border-color: rgb(26, 175, 255);
+}

@@ -14,6 +14,52 @@ Produkty:
 Zamowienia:
     Uzytkownicy moga skladac zamowienia i zobaczyc jego aktualny status
 
+Zapytania:
+    Średnia opinia produktu: 
+        SELECT produkty.nazwa, AVG(gwiazdki) AS srednia_ocena FROM opinie_produktu, produkty where produkty.id = opinie_produktu.id_produkty GROUP by opinie_produktu.id_produkty;
+    
+    10 Najlepiej sprzedajacych sie produktów:
+        SELECT p.nazwa, COUNT(*) AS liczba_zamowien FROM zamowienie_produkty zp JOIN produkty p ON zp.id_produkty = p.id GROUP BY zp.id_produkty ORDER BY COUNT(*) DESC LIMIT 10;
+    
+    Suma wartości wszystkich zamowien przed danego uzytkownika:
+        SELECT u.email, SUM(p.cena * zp.ilosc) AS wartosc_zamowien FROM zamowienia z JOIN uzytkownicy u ON z.id_uzytkownicy = u.id JOIN zamowienie_produkty zp ON z.id = zp.id_zamowienia JOIN produkty p ON zp.id_produkty = p.id GROUP BY u.id;
+    
+    Zamowienia dostarczone w ostatnich 30 dniach:
+        SELECT * FROM zamowienia WHERE data_zamowienia >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND id_status_zamowienia = 3;
+    
+    10 Najlepiej ocenianych produktów:
+        SELECT p.nazwa, AVG(op.gwiazdki) AS srednia_ocena FROM produkty p JOIN opinie_produktu op ON p.id = op.id_produkty GROUP BY p.id ORDER BY srednia_ocena DESC LIMIT 10;
+    
+    10 najczesciej kupowanych produktów razem:
+        SELECT p1.nazwa AS produkt_1, p2.nazwa AS produkt_2, COUNT(*) AS liczba_zamowien FROM zamowienie_produkty zp1 JOIN zamowienie_produkty zp2 ON zp1.id_zamowienia = zp2.id_zamowienia AND zp1.id_produkty != zp2.id_produkty JOIN produkty p1 ON zp1.id_produkty = p1.id JOIN produkty p2 ON zp2.id_produkty = p2.id GROUP BY p1.id, p2.id ORDER BY liczba_zamowien DESC LIMIT 10;
+    
+    Zmiana hasła:
+        UPDATE uzytkownicy SET haslo_hash = 'nowe_haslo_zaszyfrowane' WHERE id = 1;
+    
+    Produkty niedostepne:
+        CREATE VIEW produkty_brak_dostepnej_ilosci AS SELECT nazwa FROM produkty WHERE dostepna_ilosc < 1;
+    
+    Najczęstsze metody dostawy:
+        CREATE VIEW najczestsze_metody_dostawy AS SELECT id_metoda_dostawy, COUNT(*) AS liczba_zamowien FROM zamowienia GROUP BY id_metoda_dostawy ORDER BY liczba_zamowien DESC;
+    
+    Najczęstsze kategorie:
+        CREATE VIEW najczestsze_kategorie_produktow AS SELECT kp.id_kategorie, COUNT(*) AS liczba_produktow FROM kategorie_produkty kp JOIN produkty p ON kp.id_produkty = p.id GROUP BY kp.id_kategorie ORDER BY liczba_produktow DESC;
+    
+    Średnia ilość zamowienych produktów na zamowienie: 
+        CREATE VIEW srednia_ilosc_zamowionych_produkow AS SELECT id_produkty, AVG(ilosc) AS srednia_ilosc FROM zamowienie_produkty GROUP BY id_produkty;
+    
+    Średnia warość zamowienia na metode dotawy:
+        CREATE VIEW srednia_wartosc_zamowienia_per_metoda_dostawy AS SELECT md.nazwa AS metoda_dostawy, AVG(p.cena * zp.ilosc) AS srednia_wartosc_zamowienia FROM zamowienia z JOIN metoda_dostawy md ON z.id_metoda_dostawy = md.id JOIN zamowienie_produkty zp ON z.id = zp.id_zamowienia JOIN produkty p ON zp.id_produkty = p.id GROUP BY md.id; 
+    
+    Łączna wartość zamówień na każdego producenta:
+        CREATE VIEW laczna_wartosc_zamowien_per_producent AS SELECT pr.nazwa AS producent, SUM(p.cena * zp.ilosc) AS laczna_wartosc FROM zamowienia z JOIN zamowienie_produkty zp ON z.id = zp.id_zamowienia JOIN produkty p ON zp.id_produkty = p.id JOIN producenci pr ON p.id_producenci = pr.id GROUP BY pr.id;
+    
+    Procentowy udział liczby zamówień dla każdego statusu zamówienia:
+        CREATE VIEW udzial_liczby_zamowien_dla_statusu_zamowienia AS SELECT s.nazwa AS status,  COUNT(*) / (SELECT COUNT(*) FROM zamowienia) * 100 AS udzial_procentowy FROM zamowienia z JOIN status_zamowienia s ON z.id_status_zamowienia = s.id GROUP BY s.nazwa;
+    
+    Najwięcej zamówień w danym dniu miesiąca:
+        CREATE VIEW najwieksza_liczba_zamowien_w_dniu_miesiaca AS SELECT DAY(data_zamowienia) AS dzien_miesiaca, COUNT(*) AS liczba_zamowien FROM zamowienia GROUP BY dzien_miesiaca ORDER BY liczba_zamowien DESC LIMIT 1;
+
 Struktura:
 
 Baza Danych Suplementy:

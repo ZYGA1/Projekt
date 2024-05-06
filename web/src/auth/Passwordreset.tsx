@@ -16,7 +16,6 @@ export default function ResetPassword() {
 
     useEffect(() => {
         checkLogin(login).then((result) =>  {
-            console.log(result)
             setValidLogin(result.taken)
         })
     }, [login])
@@ -108,11 +107,11 @@ export default function ResetPassword() {
                         </div>
                         <div className="formBox">
                         <label className="formLabel" htmlFor="">Nowe hasło </label>
-                        <input type="text" className="formInput" value={haslo} onChange={handleHaslo}/>
+                        <input type="password" className="formInput" value={haslo} onChange={handleHaslo}/>
                         </div>
                         <div className="formBox">
                         <label className="formLabel" htmlFor="">Powtórz nowe hasło </label>
-                        <input className="formInput" type="text" value={nHaslo} onChange={handleNHaslo} />
+                        <input className="formInput" type="password" value={nHaslo} onChange={handleNHaslo} />
                         </div>
                         <hr />
                         <button>Resetuj hasło</button>
