@@ -9,9 +9,6 @@ export default function Navbar() {
             <div id="navContent">
                 <ul>
                     <li>
-                        LOGO
-                    </li>
-                    <li>
                         <h3>KATEGORIE</h3>
                     </li>
                     <li>

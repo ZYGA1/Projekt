@@ -20,7 +20,7 @@
 
 #navContent ul li {
     display: block;
-    width: 33.33%;
+    width: 50%;
     padding: 20px;
     text-align: left;
 }
@@ -39,4 +39,8 @@
 #navContent input:focus {
     outline: none;
     border-color: rgb(26, 175, 255);
+}
+
+#navContent ul h3 {
+    text-align: center;
 }

@@ -6,8 +6,8 @@ export default function Cart() {
         <>
             <div id="Koszyk">
                 <ul>
-                    <li>Logo</li>
-                    <li>0.00 ZŁ</li>
+                    <li>cartsvg</li>
+                    <li><h3>0.00 ZŁ</h3></li>
                 </ul>
             </div>
         </>

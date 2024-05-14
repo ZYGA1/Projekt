@@ -11,6 +11,8 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }))
+
+
 app.use(express.json(express.urlencoded({ extended: true })));
 app.use((req, res, next) => {
     res.set('x-powered-by', 'zyga')
@@ -27,3 +29,5 @@ app.listen('9000', () => {
     console.log('[Listening] Listening on port 9000');
     console.log('Dev url: 127.0.0.1:9000');
 });
+
+
